@@ -2,6 +2,7 @@
 #include <iostream>
 #include <math.h>
 
+
 WorldMap::WorldMap() {
 	if (!this->mapTexture.loadFromFile("assets/images/earth_background.png")) {
 		throw std::runtime_error("Failed to load world map image");
@@ -31,7 +32,7 @@ int WorldMap::getBaseClicked(sf::RenderWindow& window) {
 
 	sf::Vector2f mapScale = this->mapSprite.getScale();
 
-	for (int i = 0; i < this->bases.size(); i++) {
+	for (size_t i = 0; i < this->bases.size(); i++) {
 		int xDiff = (int)(this->bases[i].getPosition().x * mapSize.x * mapScale.x) - positionClicked.x;
 		int yDiff = (int)(this->bases[i].getPosition().y * mapSize.y * mapScale.y) - positionClicked.y;
 
