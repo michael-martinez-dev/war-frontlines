@@ -1,7 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <functional>
-#include "Game.h"
+
+
+class Game;
 
 enum class GameStateType {
 	MainMenu,
