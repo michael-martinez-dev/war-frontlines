@@ -1,18 +1,26 @@
 #include "Game.h"
 #include "MainMenu.h"
 #include "WorldMap.h"
+#include "FriendlyBaseView.h"
 #include <iostream>
 
 
 void Game::initEventMap() {
 	this->eventMap[GameEvent::StartGame] = [this]() { 
-		this->changeState(std::make_unique<WorldMap>());
+		this->pushState(std::make_unique<WorldMap>());
 		};
 	this->eventMap[GameEvent::ReturnToMainMenu] = [this]() {
-			this->popState();
+		std::cout << "Returning to Main Menu\n";
+		this->popState();
 		};
-	this->eventMap[GameEvent::GoToBase] = [this]() {
-		std::cout << "Going to base: ";
+	this->eventMap[GameEvent::GoToFriendlyBase] = [this]() {
+        Base selectedBase = dynamic_cast<WorldMap*>(this->states.top().get())->getSelectedBase();
+		std::cout << "Going to base: " << selectedBase.getName() << "\n";
+		this->pushState(std::make_unique<FriendlyBaseView>(selectedBase));
+		};
+	this->eventMap[GameEvent::ReturnToWorldMap] = [this]() {
+		std::cout << "Returning to World Map\n";
+		this->popState();
 		};
 	this->eventMap[GameEvent::ExitGame] = [this]() {
 			window.close();
@@ -77,9 +85,10 @@ void Game::run() {
 
 		this->window.clear();
 		if (!states.empty()) {
-			states.top()->handleInput(*this);
-			states.top()->update();
-			states.top()->render(*this);
+			auto& currentState = this->states.top();
+			currentState->update();
+			currentState->render(*this);
+			currentState->handleInput(*this);
 		}
 
 		this->window.display();

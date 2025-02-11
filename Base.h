@@ -13,9 +13,9 @@ public:
     };
 
     Base(std::string name, sf::Vector2f position, BaseType type);
-    std::string getName();
-    sf::Vector2f getPosition();
-    BaseType getType();
+    std::string getName() const;
+    sf::Vector2f getPosition() const;
+    BaseType getType() const;
     static std::vector<Base> getExampleBases();
     void setName(std::string name);
     void setPosition(sf::Vector2f position);

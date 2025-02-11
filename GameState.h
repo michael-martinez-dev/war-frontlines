@@ -18,7 +18,9 @@ enum class GameEvent {
 	ExitGame,
 	ReturnToMainMenu,
 	ReturnToWorldMap,
-	GoToBase,
+	GoToFriendlyBase,
+	GoToEnemyyBase,
+	GoToNeutralBase,
 };
 
 class GameState

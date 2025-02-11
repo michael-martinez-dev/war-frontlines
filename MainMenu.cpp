@@ -18,7 +18,7 @@ void MainMenu::handleInput(Game& game) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 			this->selectedOption = (this->selectedOption - 1) % options.size();
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 			if (this->selectedOption == 0) {
 				this->emitEvent(GameEvent::StartGame);
 			}

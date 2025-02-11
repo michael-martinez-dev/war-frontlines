@@ -6,15 +6,15 @@ Base::Base(std::string name, sf::Vector2f position, BaseType type) {
     this->type = type;
 }
 
-std::string Base::getName() {
+std::string Base::getName() const {
 	return this->name;
 }
 
-sf::Vector2f Base::getPosition() {
+sf::Vector2f Base::getPosition() const {
 	return this->position;
 }
 
-Base::BaseType Base::getType() {
+Base::BaseType Base::getType() const {
 	return this->type;
 }
 
