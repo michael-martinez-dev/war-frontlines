@@ -1,4 +1,6 @@
 #include "WorldMap.h"
+#include "Game.h"
+#include "FriendlyBaseView.h"
 #include <iostream>
 #include <math.h>
 
@@ -21,70 +23,35 @@ WorldMap::WorldMap() {
 	this->mapSprite.setScale(scaleX, scaleY);
 }
 
-int WorldMap::getBaseClicked(sf::RenderWindow& window) {
-	sf::Vector2i positionClicked = sf::Mouse::getPosition(window);
-	float windowX = window.getView().getSize().x;
-	float windowY = window.getView().getSize().y;
-
-	sf::Vector2f mapSize = static_cast<sf::Vector2f>(this->mapTexture.getSize());
-	float scaleX = static_cast<float>(windowX) / mapSize.x;
-	float ScaleY = static_cast<float>(windowY) / mapSize.y;
-
-	sf::Vector2f mapScale = this->mapSprite.getScale();
-
-	for (size_t i = 0; i < this->bases.size(); i++) {
-		int xDiff = (int)(this->bases[i].getPosition().x * mapSize.x * mapScale.x) - positionClicked.x;
-		int yDiff = (int)(this->bases[i].getPosition().y * mapSize.y * mapScale.y) - positionClicked.y;
-
-		if ((std::abs(xDiff) < 10) && (std::abs(yDiff) < 10)) {
-			return i;
-		}
-	}
-
-	return -1;
-}
-
 void WorldMap::handleInput(Game& game) {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-		this->emitEvent(GameEvent::ReturnToMainMenu);
-	}
+
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		int baseClicked = this->getBaseClicked(game.getWindow());
 		if (baseClicked != -1) {
 			this->baseSelected = baseClicked;
+
+			this->emitBaseSelected();
 		}
 	}
 	if (this->inputClock.getElapsedTime().asSeconds() > this->inputDeplay) {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab)) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+			this->emitEvent(GameEvent::Return);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 			this->baseSelected = ++this->baseSelected % this->bases.size();
 		}
-		this->inputClock.restart();
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-			this->emitEvent(GameEvent::GoToBase);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+			this->baseSelected = --this->baseSelected % this->bases.size();
 		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
+			this->emitBaseSelected();
+		}
+		this->inputClock.restart();
 	}
 }
 
 void WorldMap::update() {
 
-}
-
-sf::Color WorldMap::getBaseColor(Base::BaseType baseType) {
-	if (baseType == Base::BaseType::Neutral) {
-		return sf::Color::Yellow;
-	}
-	else if (baseType == Base::BaseType::Friendly) {
-		return sf::Color::Green;
-	}
-	else if (baseType == Base::BaseType::Enemy) {
-		return sf::Color::Red;
-	}
-	else if (baseType == Base::BaseType::FriendlyHQ) {
-		return sf::Color::Blue;
-	}
-	else if (baseType == Base::BaseType::EnemyHQ) {
-		return sf::Color::Magenta;
-	}
 }
 
 void WorldMap::render(Game& game) {
@@ -126,6 +93,63 @@ void WorldMap::render(Game& game) {
 	}
 }
 
+int WorldMap::getBaseClicked(sf::RenderWindow& window) {
+	sf::Vector2i positionClicked = sf::Mouse::getPosition(window);
+	float windowX = window.getView().getSize().x;
+	float windowY = window.getView().getSize().y;
+
+	sf::Vector2f mapSize = static_cast<sf::Vector2f>(this->mapTexture.getSize());
+	float scaleX = static_cast<float>(windowX) / mapSize.x;
+	float ScaleY = static_cast<float>(windowY) / mapSize.y;
+
+	sf::Vector2f mapScale = this->mapSprite.getScale();
+
+	for (size_t i = 0; i < this->bases.size(); i++) {
+		int xDiff = (int)(this->bases[i].getPosition().x * mapSize.x * mapScale.x) - positionClicked.x;
+		int yDiff = (int)(this->bases[i].getPosition().y * mapSize.y * mapScale.y) - positionClicked.y;
+
+		if ((std::abs(xDiff) < 10) && (std::abs(yDiff) < 10)) {
+			return i;
+		}
+	}
+
+	return -1;
+}
+
 Base WorldMap::getSelectedBase() {
 	return this->bases[this->baseSelected];
+}
+
+sf::Color WorldMap::getBaseColor(Base::BaseType baseType) {
+	if (baseType == Base::BaseType::Neutral) {
+		return sf::Color::Yellow;
+	}
+	else if (baseType == Base::BaseType::Friendly) {
+		return sf::Color::Green;
+	}
+	else if (baseType == Base::BaseType::Enemy) {
+		return sf::Color::Red;
+	}
+	else if (baseType == Base::BaseType::FriendlyHQ) {
+		return sf::Color::Blue;
+	}
+	else if (baseType == Base::BaseType::EnemyHQ) {
+		return sf::Color::Magenta;
+	}
+}
+
+void WorldMap::emitBaseSelected() {
+	switch (this->getSelectedBase().getType()) {
+	case Base::BaseType::Friendly:
+	case Base::BaseType::FriendlyHQ:
+		this->emitEvent(GameEvent::GoToFriendlyBase);
+		break;
+	case Base::BaseType::Enemy:
+	case Base::BaseType::EnemyHQ:
+		this->emitEvent(GameEvent::GoToEnemyyBase);
+		break;
+	case Base::BaseType::Neutral:
+		this->emitEvent(GameEvent::GoToNeutralBase);
+		break;
+	}
 }
