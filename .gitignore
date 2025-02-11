@@ -1,0 +1,8 @@
+*Debug/*
+*x64/*
+*.config
+.vs/*
+packages/*
+*.aps
+*.sln
+*.vcxproj*
