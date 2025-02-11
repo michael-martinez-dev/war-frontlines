@@ -21,10 +21,10 @@ Base::BaseType Base::getType() const {
 std::vector<Base> Base::getExampleBases() {
     return std::vector<Base> {
         Base("Base 1", {0.07f, 0.14f}, BaseType::Neutral),
-        Base("Friendly HQ", {0.28f, 0.35f}, BaseType::FriendlyHQ),
-        Base("Friendly A", {0.38f, 0.62f}, BaseType::Friendly),
-        Base("Enemy A", {0.56f, 0.68f}, BaseType::Enemy),
-        Base("Enemy HQ", {0.6f, 0.25f}, BaseType::EnemyHQ),
+        Base("HQ 1", {0.28f, 0.35f}, BaseType::FriendlyHQ),
+        Base("Base 2", {0.38f, 0.62f}, BaseType::Friendly),
+        Base("Base 3", {0.56f, 0.68f}, BaseType::Enemy),
+        Base("HQ 2", {0.6f, 0.25f}, BaseType::EnemyHQ),
     };
 }
 

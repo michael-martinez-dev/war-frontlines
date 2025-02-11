@@ -16,6 +16,7 @@ enum class GameEvent {
 	StartGame,
 	OpenUserMenu,
 	ExitGame,
+	Return,
 	ReturnToMainMenu,
 	ReturnToWorldMap,
 	GoToFriendlyBase,

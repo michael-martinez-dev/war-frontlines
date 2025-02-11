@@ -12,6 +12,7 @@ class Game
 	std::unordered_map<GameEvent, std::function<void()>> eventMap;
 	sf::RenderWindow window;
 	sf::View view;
+	sf::Clock eventCoolDownClock;
 
 public:
 	Game();

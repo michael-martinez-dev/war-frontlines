@@ -2,6 +2,8 @@
 #include "MainMenu.h"
 #include "WorldMap.h"
 #include "FriendlyBaseView.h"
+#include "EnemyBaseView.h"
+#include "NeutralBaseView.h"
 #include <iostream>
 
 
@@ -9,18 +11,20 @@ void Game::initEventMap() {
 	this->eventMap[GameEvent::StartGame] = [this]() { 
 		this->pushState(std::make_unique<WorldMap>());
 		};
-	this->eventMap[GameEvent::ReturnToMainMenu] = [this]() {
-		std::cout << "Returning to Main Menu\n";
+	this->eventMap[GameEvent::Return] = [this]() {
 		this->popState();
 		};
 	this->eventMap[GameEvent::GoToFriendlyBase] = [this]() {
-        Base selectedBase = dynamic_cast<WorldMap*>(this->states.top().get())->getSelectedBase();
-		std::cout << "Going to base: " << selectedBase.getName() << "\n";
+		Base selectedBase = dynamic_cast<WorldMap*>(this->states.top().get())->getSelectedBase();
 		this->pushState(std::make_unique<FriendlyBaseView>(selectedBase));
 		};
-	this->eventMap[GameEvent::ReturnToWorldMap] = [this]() {
-		std::cout << "Returning to World Map\n";
-		this->popState();
+	this->eventMap[GameEvent::GoToEnemyyBase] = [this]() {
+		Base selectedBase = dynamic_cast<WorldMap*>(this->states.top().get())->getSelectedBase();
+		this->pushState(std::make_unique<EnemyBaseView>(selectedBase));
+		};
+	this->eventMap[GameEvent::GoToNeutralBase] = [this]() {
+		Base selectedBase = dynamic_cast<WorldMap*>(this->states.top().get())->getSelectedBase();
+		this->pushState(std::make_unique<NeutralBaseView>(selectedBase));
 		};
 	this->eventMap[GameEvent::ExitGame] = [this]() {
 			window.close();
@@ -55,6 +59,10 @@ std::unique_ptr<GameState>& Game::getCurrentState() {
 }
 
 void Game::handleEvent(GameEvent event) {
+	if (this->eventCoolDownClock.getElapsedTime().asMilliseconds() < 500) {
+		return;
+	}
+
 	auto it = this->eventMap.find(event);
 	if (it != eventMap.end()) {
 		it->second();
@@ -62,6 +70,8 @@ void Game::handleEvent(GameEvent event) {
 	else {
 		std::cerr << "Unknown event\n";
 	}
+
+	this->eventCoolDownClock.restart();
 }
 
 

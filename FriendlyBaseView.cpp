@@ -16,7 +16,7 @@ FriendlyBaseView::FriendlyBaseView(const Base& base) : base(base) {
 void FriendlyBaseView::handleInput(Game& game) {
 	if (this->inputClock.getElapsedTime().asSeconds() > this->inputDeplay) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-			this->emitEvent(GameEvent::ReturnToWorldMap);
+			this->emitEvent(GameEvent::Return);
 		}
 		this->inputClock.restart();
 	}

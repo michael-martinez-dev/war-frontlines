@@ -12,13 +12,13 @@ MainMenu::MainMenu() {
 void MainMenu::handleInput(Game& game) {
 
 	if (this->inputClock.getElapsedTime().asSeconds() > this->inputDeplay) {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Tab)) {
 			this->selectedOption = (this->selectedOption + 1) % options.size();
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 			this->selectedOption = (this->selectedOption - 1) % options.size();
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
 			if (this->selectedOption == 0) {
 				this->emitEvent(GameEvent::StartGame);
 			}
