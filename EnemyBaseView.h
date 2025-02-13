@@ -1,20 +1,11 @@
 #pragma once
-#include "GameState.h"
-#include "Base.h"
+#include "BaseView.h"
+#include "GridView.h"
 
-class EnemyBaseView : public GameState
+class EnemyBaseView : public BaseView, protected GridView
 {
-private:
-	Base base;
-	sf::Font font;
-	sf::Text baseInfoText;
-	sf::Clock inputClock;
-	const float inputDeplay = 0.2f;
-
 public:
 	EnemyBaseView(const Base& base);
-	void handleInput(Game& game) override;
-	void update() override;
 	void render(Game& game) override;
 };
 
