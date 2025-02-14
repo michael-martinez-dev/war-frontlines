@@ -44,11 +44,11 @@ void FriendlyBaseView::handleGridClick(sf::RenderWindow& window, sf::Event event
                 .getGlobalBounds()
                 .contains(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y))) {
 
-                if (cell.getState() == GridCell::State::Troop) {
+                if (cell.getState() == GridCell::State::Defense) {
                     cell.setState(GridCell::State::Empty);
                 }
                 else if (cell.getState() == GridCell::State::Empty) {
-                    cell.setState(GridCell::State::Troop);
+                    cell.setState(GridCell::State::Defense);
 
                     std::vector<sf::Vector2i> bufferCells = this->getSurroundingGridCells(
                         i % this->getNumRows(), i / this->getNumCols());
