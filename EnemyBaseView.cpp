@@ -12,8 +12,12 @@ void EnemyBaseView::render(Game& game) {
 
     Base::BaseType type = base.getType();
     if (type != Base::BaseType::FriendlyHQ) {
-        for (auto& cell : gridCells) {
+        for (auto& cell : this->getGridCells()) {
             window.draw(cell.getGridSquare());
         }
     }
+}
+
+void EnemyBaseView::handleGridClick(sf::RenderWindow& window, sf::Event event) {
+
 }
