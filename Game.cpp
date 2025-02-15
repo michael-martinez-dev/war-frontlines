@@ -16,11 +16,11 @@ void Game::initEventMap() {
 		};
 	this->eventMap[GameEvent::GoToFriendlyBase] = [this]() {
 		Base selectedBase = dynamic_cast<WorldMap*>(this->states.top().get())->getSelectedBase();
-		this->pushState(std::make_unique<FriendlyBaseView>(selectedBase));
+		this->pushState(std::make_unique<FriendlyBaseView>(selectedBase, this->getWindow()));
 		};
 	this->eventMap[GameEvent::GoToEnemyyBase] = [this]() {
 		Base selectedBase = dynamic_cast<WorldMap*>(this->states.top().get())->getSelectedBase();
-		this->pushState(std::make_unique<EnemyBaseView>(selectedBase));
+		this->pushState(std::make_unique<EnemyBaseView>(selectedBase, this->getWindow()));
 		};
 	this->eventMap[GameEvent::GoToNeutralBase] = [this]() {
 		Base selectedBase = dynamic_cast<WorldMap*>(this->states.top().get())->getSelectedBase();

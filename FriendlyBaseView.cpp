@@ -1,11 +1,13 @@
 #include "FriendlyBaseView.h"
 #include "Game.h"
+#include <iostream>
 
-FriendlyBaseView::FriendlyBaseView(const Base& base) : BaseView(base, "Friendly") {}
+FriendlyBaseView::FriendlyBaseView(const Base& base, sf::RenderWindow& window) : BaseView(base, "Friendly") {
+    setupGrid(window);
+}
 
 void FriendlyBaseView::render(Game& game) {
     sf::RenderWindow& window = game.getWindow();
-    setupGrid(window);
     window.draw(baseInfoText);
 
     Base::BaseType type = base.getType();
@@ -26,6 +28,9 @@ void FriendlyBaseView::handleInput(Game& game) {
         inputClock.restart();
     }
     while (window.pollEvent(event)) {
+        if (event.type == sf::Event::Resized) {
+            resizeGrid(window);
+        }
         if (event.type == sf::Event::MouseButtonPressed) {
             handleGridClick(window, event);
         }
@@ -46,18 +51,33 @@ void FriendlyBaseView::handleGridClick(sf::RenderWindow& window, sf::Event event
 
                 if (cell.getState() == GridCell::State::Defense) {
                     cell.setState(GridCell::State::Empty);
+                    std::vector<sf::Vector2i> bufferCells = this->getSurroundingGridCells(
+                        i / this->getNumRows(), i % this->getNumCols());
+
+                    for (sf::Vector2i& cellIndex : bufferCells) {
+                        int gridCellIndex = cellIndex.x * this->getNumCols() + cellIndex.y;
+                        if (gridCells[gridCellIndex].getState() != GridCell::State::Defense) {
+                            gridCells[gridCellIndex].setState(GridCell::State::Empty);
+                        }
+                    }
                 }
-                else if (cell.getState() == GridCell::State::Empty) {
+                else if (cell.getState() == GridCell::State::Empty || cell.getState() == GridCell::State::Buffer) {
                     cell.setState(GridCell::State::Defense);
 
                     std::vector<sf::Vector2i> bufferCells = this->getSurroundingGridCells(
-                        i % this->getNumRows(), i / this->getNumCols());
+                        i / this->getNumRows(), i % this->getNumCols());
 
                     for (sf::Vector2i& cellIndex : bufferCells) {
-                        gridCells[cellIndex.x * this->getNumCols() + cellIndex.y].setState(GridCell::State::Buffer);
+                        int gridCellIndex = cellIndex.x * this->getNumCols() + cellIndex.y;
+                        if (gridCells[gridCellIndex].getState() != GridCell::State::Defense) {
+                            gridCells[gridCellIndex].setState(GridCell::State::Buffer);
+                        }
                     }
                 }
+
                 this->setGridCells(gridCells);
+   
+                
                 break;
             }
             i++;
