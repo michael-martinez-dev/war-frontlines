@@ -42,7 +42,7 @@ void GridView::resizeGrid(sf::RenderWindow& window) {
     }
 }
 
-std::vector<GridCell> GridView::getGridCells() {
+std::vector<GridCell>& GridView::getGridCells() {
     return this->gridCells;
 }
 
@@ -53,16 +53,13 @@ void GridView::setGridCells(std::vector<GridCell> new_grid_cells) {
 std::vector<sf::Vector2i> GridView::getSurroundingGridCells(int x, int y) {
     std::vector<sf::Vector2i> bufferGridCells;
 
-    std::cout << "pressed: (" << x << ", " << y << ")\n";
 
     for (int i = 0; i < 8; i++) {
         int newX = x + surroundingGrids[i][0];
         int newY = y + surroundingGrids[i][1];
-        std::cout << "NewX=" << newX << ", NewY=" << newY << "\n";
 
         // Ensure we don't go out of bounds
         if (newX >= 0 && newX < gridCols && newY >= 0 && newY < gridRows) {
-            std::cout << "Added\n";
             bufferGridCells.push_back(sf::Vector2i(newX, newY));
         }
     }

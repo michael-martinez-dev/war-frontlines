@@ -24,18 +24,19 @@ void EnemyBaseView::handleInput(Game& game) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
             this->emitEvent(GameEvent::Return);
         }
+
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            handleGridClick(window);
+        }
         inputClock.restart();
     }
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Resized) {
             resizeGrid(window);
         }
-        if (event.type == sf::Event::MouseButtonPressed) {
-            handleGridClick(window, event);
-        }
     }
 }
 
-void EnemyBaseView::handleGridClick(sf::RenderWindow& window, sf::Event event) {
+void EnemyBaseView::handleGridClick(sf::RenderWindow& window) {
 
 }

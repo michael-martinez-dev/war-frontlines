@@ -24,7 +24,8 @@ std::vector<Base> Base::getExampleBases() {
         Base("HQ 1", {0.28f, 0.35f}, BaseType::FriendlyHQ),
         Base("Base 2", {0.38f, 0.62f}, BaseType::Friendly),
         Base("Base 3", {0.56f, 0.68f}, BaseType::Enemy),
-        Base("HQ 2", {0.6f, 0.25f}, BaseType::EnemyHQ),
+        Base("HQ 2", {0.595f, 0.25f}, BaseType::EnemyHQ),
+        Base("Base 4", {0.45f, 0.14f}, BaseType::Neutral)
     };
 }
 

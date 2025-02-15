@@ -8,8 +8,8 @@ class GridView
 private:
 	// Grid
 	std::vector<GridCell> gridCells;
-	const int gridRows = 5;
-	const int gridCols = 5;
+	const int gridRows = 25;
+	const int gridCols = 25;
 	float cellSize = 1.0;
 	const int surroundingGrids[8][2] = {
 	{-1,-1},
@@ -25,9 +25,9 @@ private:
 public:
 	void setupGrid(sf::RenderWindow& window);
 	void resizeGrid(sf::RenderWindow& window);
-	std::vector<GridCell> getGridCells();
+	std::vector<GridCell>& getGridCells();
 	void setGridCells(std::vector<GridCell> new_grid_cells);
-	virtual void handleGridClick(sf::RenderWindow& window, sf::Event event) = 0;
+	virtual void handleGridClick(sf::RenderWindow& window) = 0;
 	std::vector<sf::Vector2i> getSurroundingGridCells(int x, int y);
 	int getNumRows() { return gridRows; }
 	int getNumCols() { return gridCols; }

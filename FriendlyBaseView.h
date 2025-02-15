@@ -7,5 +7,5 @@ public:
 	FriendlyBaseView(const Base& base, sf::RenderWindow& window);
 	void render(Game& game) override;
 	void handleInput(Game& game) override;
-	void handleGridClick(sf::RenderWindow& window, sf::Event event) override;
+	void handleGridClick(sf::RenderWindow& window) override;
 };
