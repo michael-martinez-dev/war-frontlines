@@ -20,8 +20,9 @@ enum class GameEvent {
 	ReturnToMainMenu,
 	ReturnToWorldMap,
 	GoToFriendlyBase,
-	GoToEnemyyBase,
+	GoToEnemyBase,
 	GoToNeutralBase,
+	GoToFriendlyHQ,
 };
 
 class GameState

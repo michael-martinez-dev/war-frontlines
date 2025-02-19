@@ -40,4 +40,3 @@ void BaseView::render(Game& game) {
     sf::RenderWindow& window = game.getWindow();
     window.draw(baseInfoText);
 }
-

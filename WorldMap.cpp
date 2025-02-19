@@ -140,13 +140,13 @@ sf::Color WorldMap::getBaseColor(Base::BaseType baseType) {
 
 void WorldMap::emitBaseSelected() {
 	switch (this->getSelectedBase().getType()) {
-	case Base::BaseType::Friendly:
 	case Base::BaseType::FriendlyHQ:
+		this->emitEvent(GameEvent::GoToFriendlyHQ);
+	case Base::BaseType::Friendly:
 		this->emitEvent(GameEvent::GoToFriendlyBase);
 		break;
 	case Base::BaseType::Enemy:
-	case Base::BaseType::EnemyHQ:
-		this->emitEvent(GameEvent::GoToEnemyyBase);
+		this->emitEvent(GameEvent::GoToEnemyBase);
 		break;
 	case Base::BaseType::Neutral:
 		this->emitEvent(GameEvent::GoToNeutralBase);

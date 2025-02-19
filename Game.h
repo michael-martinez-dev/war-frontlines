@@ -1,5 +1,7 @@
 #pragma once
 #include "GameState.h"
+#include "User.h"
+#include "EnemyUser.h"
 #include <SFML/Graphics.hpp>
 #include <stack>
 #include <unordered_map>
@@ -14,6 +16,9 @@ class Game
 	sf::View view;
 	sf::Clock eventCoolDownClock;
 
+	User user;
+	EnemyUser eUser;
+
 public:
 	Game();
 	void initEventMap();
@@ -24,4 +29,8 @@ public:
 	void handleEvent(GameEvent event);
 	void run();
 	sf::RenderWindow& getWindow();
+	User& getUser();
+	void setUser(User& user);
+	EnemyUser& getEnemyUser();
+	void setEnemyUser(EnemyUser& eUser);
 };

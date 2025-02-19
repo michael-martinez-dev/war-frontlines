@@ -15,6 +15,7 @@ protected:
 	sf::Clock  inputClock;
 	const float inputDelay = 0.2f;
 
+
 	void setupBaseInfoText(const std::string& type);
 
 public:

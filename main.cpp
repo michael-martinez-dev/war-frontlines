@@ -3,7 +3,9 @@
 
 int main() {
 	try {
+		User user;
 		Game game;
+		game.setUser(user);
 		game.run();
 	}
 	catch (const std::exception& err) {

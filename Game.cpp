@@ -2,6 +2,7 @@
 #include "MainMenu.h"
 #include "WorldMap.h"
 #include "FriendlyBaseView.h"
+#include "FriendlyHQView.h"
 #include "EnemyBaseView.h"
 #include "NeutralBaseView.h"
 #include <iostream>
@@ -16,11 +17,15 @@ void Game::initEventMap() {
 		};
 	this->eventMap[GameEvent::GoToFriendlyBase] = [this]() {
 		Base selectedBase = dynamic_cast<WorldMap*>(this->states.top().get())->getSelectedBase();
-		this->pushState(std::make_unique<FriendlyBaseView>(selectedBase, this->getWindow()));
+		this->pushState(std::make_unique<FriendlyBaseView>(this->getUser(), selectedBase, this->getWindow()));
 		};
-	this->eventMap[GameEvent::GoToEnemyyBase] = [this]() {
+	this->eventMap[GameEvent::GoToFriendlyHQ] = [this]() {
 		Base selectedBase = dynamic_cast<WorldMap*>(this->states.top().get())->getSelectedBase();
-		this->pushState(std::make_unique<EnemyBaseView>(selectedBase, this->getWindow()));
+		this->pushState(std::make_unique<FriendlyHQView>(selectedBase, this->user));
+		};
+	this->eventMap[GameEvent::GoToEnemyBase] = [this]() {
+		Base selectedBase = dynamic_cast<WorldMap*>(this->states.top().get())->getSelectedBase();
+		this->pushState(std::make_unique<EnemyBaseView>(this->getEnemyUser(), selectedBase, this->getWindow()));
 		};
 	this->eventMap[GameEvent::GoToNeutralBase] = [this]() {
 		Base selectedBase = dynamic_cast<WorldMap*>(this->states.top().get())->getSelectedBase();
@@ -31,7 +36,7 @@ void Game::initEventMap() {
 		};
 }
 
-Game::Game() : window(sf::VideoMode(1440, 720), "War Frontlines") {
+Game::Game() : window(sf::VideoMode(2500, 1250), "War Frontlines", sf::Style::Close) {
 	this->initEventMap();
 	this->view = window.getDefaultView();
 }
@@ -107,4 +112,20 @@ void Game::run() {
 
 sf::RenderWindow& Game::getWindow() {
 	return this->window;
+}
+
+User& Game::getUser() {
+	return this->user;
+}
+
+void Game::setUser(User& user) {
+	this->user = user;
+}
+
+EnemyUser& Game::getEnemyUser() {
+	return this->eUser;
+}
+
+void Game::setEnemyUser(EnemyUser& eUser) {
+	this->eUser = eUser;
 }
